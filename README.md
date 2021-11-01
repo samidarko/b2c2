@@ -32,7 +32,7 @@ $  pip install libs/python/b2c2_api
 then install the cli
 
 ```shell
-$  pip install b2c2_cli
+$  pip install ./b2c2_cli
 ```
 
 Finally, 

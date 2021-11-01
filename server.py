@@ -11,6 +11,19 @@ logger.setLevel(logging.INFO)
 stream_handler = logging.StreamHandler(sys.stdout)
 logger.addHandler(stream_handler)
 
+balance = {
+    "USD": "10000",
+    "BTC": "10000",
+    "JPY": "10000",
+    "GBP": "10000",
+    "ETH": "10000",
+    "EUR": "10000",
+    "CAD": "10000",
+    "LTC": "10000",
+    "XRP": "10000",
+    "BCH": "10000"
+}
+
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
@@ -22,18 +35,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         payload = {}
         if self.path == '/balance':
-            payload = {
-                "USD": "0",
-                "BTC": "0",
-                "JPY": "0",
-                "GBP": "0",
-                "ETH": "0",
-                "EUR": "0",
-                "CAD": "0",
-                "LTC": "0",
-                "XRP": "0",
-                "BCH": "0"
-            }
+            payload = balance
         if self.path == "/instruments":
             payload = [
                 {
@@ -85,6 +87,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "created": "2018-02-06T16:07:50.122206Z"
             }
         if self.path == "/order":
+            content_length = int(self.headers.get('Content-Length'))
+            body = self.rfile.read(content_length)
+            data = json.loads(body)
+            currency = data["instrument"][3:6]
+            if data["side"] == "buy":
+                balance[currency] = str(float(balance[currency]) - float(data['quantity']) * float(data['price']))
+            else:
+                balance[currency] = str(float(balance[currency]) + float(data['quantity']) * float(data['price']))
             payload = {
                 "order_id": "d4e41399-e7a1-4576-9b46-349420040e1a",
                 "client_order_id": "d4e41399-e7a1-4576-9b46-349420040e1a",
