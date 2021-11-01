@@ -136,8 +136,7 @@ def request_for_quote(ctx, instrument, side, quantity, client_rfq_id):
         try:
             currency = instrument[3:6]  # TODO validate instrument is an accepted input
             balance = api_instance.b2c2_balance_get()
-            # currency_balance = float(balance[currency])
-            currency_balance = 10000
+            currency_balance = float(balance[currency])
             click.echo(currency_balance)
             quote_request = QuoteRequest(
                 instrument=instrument,
