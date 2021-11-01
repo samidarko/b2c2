@@ -1,0 +1,302 @@
+openapi: 3.0.1
+info:
+  title: Swagger b2c2
+  description: >-
+    B2C2 REST API
+  version: 1.0.0
+tags:
+  - name: b2c2
+paths:
+  /balance:
+    summary: ''
+    description: ''
+    get:
+      tags:
+        - b2c2
+      summary: 'Get Balances'
+      description: >-
+        This shows the available balances in the supported currencies.
+      operationId: b2c2_balance_get
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+        '400':
+          description: Bad Request –- Incorrect parameters.
+          content: {}
+        '401':
+          description: Unauthorized – Wrong Token.
+          content: {}
+        '404':
+          description: Not Found – The specified endpoint could not be found.
+          content: {}
+        '405':
+          description: Method Not Allowed – You tried to access an endpoint with an invalid method.
+          content: {}
+        '406':
+          description: Not Acceptable – Incorrect request format.
+          content: {}
+        '429':
+          description: Too Many Requests – Rate limited, pause requests.
+          content: {}
+        '500':
+          description: Internal Server Error – We had a problem with our server. Try again later.
+          content: {}
+        '503':
+          description: Service unavailable
+          content: {}
+      security:
+        - api_key: []
+  /instruments:
+    summary: ''
+    description: ''
+    get:
+      tags:
+        - b2c2
+      summary: 'Get Tradable Instruments'
+      description: >-
+        List all your tradable instruments. Please ask your sales representative
+        if you want access to more instruments.
+      operationId: b2c2_instruments_get
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Instrument'
+        '400':
+          description: Bad Request –- Incorrect parameters.
+          content: {}
+        '401':
+          description: Unauthorized – Wrong Token.
+          content: {}
+        '404':
+          description: Not Found – The specified endpoint could not be found.
+          content: {}
+        '405':
+          description: Method Not Allowed – You tried to access an endpoint with an invalid method.
+          content: {}
+        '406':
+          description: Not Acceptable – Incorrect request format.
+          content: {}
+        '429':
+          description: Too Many Requests – Rate limited, pause requests.
+          content: {}
+        '500':
+          description: Internal Server Error – We had a problem with our server. Try again later.
+          content: {}
+        '503':
+          description: Service unavailable
+          content: {}
+      security:
+        - api_key: []
+  /request_for_quote:
+    post:
+      tags:
+        - b2c2
+      summary: API endpoint to send Request for Quotes.
+      operationId: b2c2_request_for_quote_post
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '400':
+          description: Bad Request –- Incorrect parameters.
+          content: {}
+        '401':
+          description: Unauthorized – Wrong Token.
+          content: {}
+        '404':
+          description: Not Found – The specified endpoint could not be found.
+          content: {}
+        '405':
+          description: Method Not Allowed – You tried to access an endpoint with an invalid method.
+          content: {}
+        '406':
+          description: Not Acceptable – Incorrect request format.
+          content: {}
+        '429':
+          description: Too Many Requests – Rate limited, pause requests.
+          content: {}
+        '500':
+          description: Internal Server Error – We had a problem with our server. Try again later.
+          content: {}
+        '503':
+          description: Service unavailable
+          content: {}
+      security:
+        - api_key: []
+  /order:
+    post:
+      tags:
+        - b2c2
+      summary: Post an order
+      operationId: b2c2_order_post
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request –- Incorrect parameters.
+          content: {}
+        '401':
+          description: Unauthorized – Wrong Token.
+          content: {}
+        '404':
+          description: Not Found – The specified endpoint could not be found.
+          content: {}
+        '405':
+          description: Method Not Allowed – You tried to access an endpoint with an invalid method.
+          content: {}
+        '406':
+          description: Not Acceptable – Incorrect request format.
+          content: {}
+        '429':
+          description: Too Many Requests – Rate limited, pause requests.
+          content: {}
+        '500':
+          description: Internal Server Error – We had a problem with our server. Try again later.
+          content: {}
+        '503':
+          description: Service unavailable
+          content: {}
+      security:
+        - api_key: []
+components:
+  schemas:
+    Instrument:
+      type: object
+      properties:
+        name: 
+          type: string
+    Quote:
+      type: object
+      properties:
+        valid_until: 
+          type: string
+        rfq_id: 
+          type: string
+        client_rfq_id: 
+          type: string
+        quantity: 
+          type: string
+        side: 
+          type: string
+        instrument: 
+          type: string
+        price: 
+          type: string
+        created: 
+          type: string
+    QuoteRequest:
+      type: object
+      properties:
+        instrument: 
+          type: string
+        side: 
+          type: string
+        quantity: 
+          type: string
+        client_rfq_id: 
+          type: string
+    Balance:
+      type: object
+      additionalProperties:
+        type: string
+    Order:
+      type: object
+      properties:
+        order_id: 
+          type: string
+        client_order_id: 
+          type: string
+        quantity: 
+          type: string
+        side: 
+          type: string
+        instrument: 
+          type: string
+        price: 
+          type: string
+        executed_price: 
+          type: string
+        executing_unit: 
+          type: string
+        created: 
+          type: string
+        trades: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Trade'
+    OrderRequest:
+      type: object
+      properties:
+        instrument: 
+          type: string
+        side: 
+          type: string
+        quantity: 
+          type: string
+        client_order_id: 
+          type: string
+        price: 
+          type: string
+        order_type: 
+          type: string
+        valid_until: 
+          type: string
+        executing_unit: 
+          type: string
+    Trade:
+      type: object
+      properties:
+        instrument: 
+          type: string
+        trade_id: 
+          type: string
+        origin: 
+          type: string
+        created: 
+          type: string
+        price: 
+          type: string
+        quantity: 
+          type: string
+        order: 
+          type: string
+        side: 
+          type: string
+        executing_unit: 
+          type: string
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+
